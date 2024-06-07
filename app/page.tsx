@@ -10,14 +10,8 @@ import { useAuth } from './context/AuthContext';
 import { useEffect, useState } from 'react';
 
 const fetchPosts = async (): Promise<Post[]> => {
-  try {
-    const response = await axiosInstance.get('auth/posts');
-    console.log('Response data:', response.data); // Debugging line
-    return response.data.posts;
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    throw error;
-  }
+  const response = await axiosInstance.get('posts');
+  return response.data.posts;
 };
 
 const HomePage = () => {

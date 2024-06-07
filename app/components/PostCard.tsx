@@ -9,7 +9,6 @@ const PostCard = ({ post }: PostCardProps) => {
     <div className="bg-white shadow-md rounded-lg overflow-hidden mb-6">
       <div className="md:flex">
         <div className="md:flex-shrink-0">
-          {/* <img className="h-48 w-full object-cover md:w-48" src="https://via.placeholder.com/150" alt="Post image" /> */}
         </div>
         <div className="p-6">
           <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Some Author • 22 July</div>
