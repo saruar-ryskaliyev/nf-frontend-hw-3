@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Post } from '../types';
+import Image from 'next/image';
 import { useTheme } from '../context/ThemeContext';
 
 interface PostDetailProps {
@@ -16,10 +17,10 @@ const PostDetail = ({ post }: PostDetailProps) => {
       <div className="mb-4">
         <h1 className="text-4xl font-bold mb-2">{post.title}</h1>
         <div className="flex items-center mb-4">
-          <img className="h-12 w-12 rounded-full mr-4" src="https://via.placeholder.com/48" alt="Author's Avatar" />
+          <Image className="h-12 w-12 rounded-full mr-4" src="https://via.placeholder.com/48" alt="Author's Avatar" />
           <div>
             <div className="text-sm">
-              <span className="font-bold">Author's Name</span>
+              <span className="font-bold">Author&apos;s Name</span>
               <span className="text-gray-600 ml-2">•</span>
               <span className="text-gray-600 ml-2">7 July</span>
               <span className="text-gray-600 ml-2">•</span>
