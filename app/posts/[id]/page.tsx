@@ -17,19 +17,9 @@ const PostPage = async ({ params }: Params) => {
   const post = await fetchPost(id);
 
   return (
-    <RootLayout>
-      <PostDetail post={post} />
-    </RootLayout>
+    <PostDetail post={post} />
   );
 };
 
-// export async function generateStaticParams() {
-//   const response = await axiosInstance.get('auth/posts');
-//   const posts: Post[] = response.data.posts;
-
-//   return posts.map((post: Post) => ({
-//     id: post.id.toString(),
-//   }));
-// }
 
 export default PostPage;

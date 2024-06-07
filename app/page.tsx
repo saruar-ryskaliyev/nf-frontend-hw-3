@@ -1,13 +1,12 @@
-'use client'
+'use client';
 
 import axiosInstance from './axiosInstance';
 import PostList from './components/PostList';
 import { Post } from './types';
-import RootLayout from './layout';
-import Header from './components/Header';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './context/AuthContext';
 import { useEffect, useState } from 'react';
+import PostActions from './components/PostActions';
 
 const fetchPosts = async (): Promise<Post[]> => {
   const response = await axiosInstance.get('auth/posts');
@@ -46,13 +45,11 @@ const HomePage = () => {
 
   return (
     <ProtectedRoute>
-      <RootLayout>
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="text-4xl font-bold mb-8">Hello, world!</h1>
-          <PostList posts={posts} />
-        </div>
-      </RootLayout>
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold mb-8">Hello, world!</h1>
+        <PostActions posts={posts} setPosts={setPosts} />
+        <PostList posts={posts} />
+      </div>
     </ProtectedRoute>
   );
 };

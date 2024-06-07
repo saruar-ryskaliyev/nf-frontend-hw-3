@@ -10,7 +10,12 @@ axiosInstance.interceptors.request.use(
       const token = localStorage.getItem('token');
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
+        config.headers['Content-Type'] = 'application/json';
+      } else {
+        console.warn('Token not found in localStorage');
       }
+    } else {
+      console.warn('window is undefined');
     }
     return config;
   },
@@ -25,7 +30,6 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     if (error.response) {
-
       console.error('Response error:', error.response);
     } else if (error.request) {
       console.error('Request error:', error.request);

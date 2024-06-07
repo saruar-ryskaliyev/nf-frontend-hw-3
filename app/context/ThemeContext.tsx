@@ -1,6 +1,5 @@
-'use client'
+'use client';
 
-// app/context/ThemeContext.tsx
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface ThemeContextProps {
@@ -11,15 +10,22 @@ interface ThemeContextProps {
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState('light');
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-  };
+  const [theme, setTheme] = useState<string>('light');
 
   useEffect(() => {
-    document.body.className = theme;
-  }, [theme]);
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('theme', newTheme);
+    }
+  };
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

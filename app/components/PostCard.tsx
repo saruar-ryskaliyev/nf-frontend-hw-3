@@ -16,18 +16,17 @@ const PostCard = ({ post }: PostCardProps) => {
           <p className="mt-2 text-gray-600">{post.body}</p>
           <div className="mt-4">
             <span className="text-gray-500 text-sm">12 min read • Selected for you</span>
-            <div className="mt-2">
-              <span className="text-gray-500 text-sm">Tags: </span>
-              {post.tags.map((tag, index) => (
-                <span key={index} className="inline-block bg-gray-200 rounded-full px-2 py-1 text-sm font-semibold text-gray-700 mr-2">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <span className="text-gray-500 text-sm">Views: {post.views}</span>
+            <br />
+            {post.tags && Array.isArray(post.tags) && post.tags.length > 0 && (
+              <div className="mt-2">
+                <span className="text-gray-500 text-sm">Tags: </span>
+                {post.tags.map((tag, index) => (
+                  <span key={index} className="inline-block bg-gray-200 rounded-full px-2 py-1 text-sm font-semibold text-gray-700 mr-2">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
