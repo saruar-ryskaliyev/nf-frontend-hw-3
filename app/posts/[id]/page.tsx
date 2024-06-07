@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axiosInstance from '../../axiosInstance';
 import PostDetail from '../../components/PostDetail';
 import { Post } from '../../types';
 import RootLayout from '../../layout';
 
 const fetchPost = async (id: string): Promise<Post> => {
-  const response = await axios.get(`https://dummyjson.com/posts/${id}`);
+  const response = await axiosInstance.get(`/posts/${id}`);
   return response.data;
 };
 
@@ -23,13 +23,13 @@ const PostPage = async ({ params }: Params) => {
   );
 };
 
-export async function generateStaticParams() {
-  const response = await axios.get('https://dummyjson.com/posts');
-  const posts: Post[] = response.data.posts;
+// export async function generateStaticParams() {
+//   const response = await axiosInstance.get('auth/posts');
+//   const posts: Post[] = response.data.posts;
 
-  return posts.map((post: Post) => ({
-    id: post.id.toString(),
-  }));
-}
+//   return posts.map((post: Post) => ({
+//     id: post.id.toString(),
+//   }));
+// }
 
 export default PostPage;

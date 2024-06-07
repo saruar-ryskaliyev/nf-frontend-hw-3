@@ -10,7 +10,7 @@ import { useAuth } from './context/AuthContext';
 import { useEffect, useState } from 'react';
 
 const fetchPosts = async (): Promise<Post[]> => {
-  const response = await axiosInstance.get('posts');
+  const response = await axiosInstance.get('auth/posts');
   return response.data.posts;
 };
 

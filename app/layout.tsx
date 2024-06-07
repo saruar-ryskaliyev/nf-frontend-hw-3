@@ -2,7 +2,7 @@
 import { ReactNode } from 'react';
 import './globals.css';
 import { AuthProvider } from './context/AuthContext';
-import { ThemeProvider } from './context/ThemeContext';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 import Head from 'next/head';
 
 
@@ -13,9 +13,6 @@ interface LayoutProps {
 const RootLayout = ({ children }: LayoutProps) => {
   return (
     <html lang="en">
-      <Head>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <body>
         <AuthProvider>
           <ThemeProvider>
