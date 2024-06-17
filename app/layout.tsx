@@ -6,6 +6,7 @@ import './globals.css';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import Header from './components/Header';
+import { MusicPlayerProvider } from './context/MusicPlayerContext';
 
 interface LayoutProps {
   children: ReactNode;
@@ -33,8 +34,10 @@ const RootLayout = ({ children }: LayoutProps) => {
         <ThemeProvider>
 
           <ThemedBody>
+            <MusicPlayerProvider>
 
             {children}
+            </MusicPlayerProvider>
 
           </ThemedBody>
         </ThemeProvider>

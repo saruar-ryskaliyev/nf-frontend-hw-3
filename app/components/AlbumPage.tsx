@@ -1,10 +1,15 @@
-import { Album } from '../types/index'; // Import the Album type
+'use client'
+
+import { Album } from '../types'; // Import the Album type
+import { useMusicPlayer } from '../context/MusicPlayerContext';
 
 export interface AlbumPageProps {
   album: Album;
 }
 
 const AlbumPage = ({ album }: AlbumPageProps) => {
+  const { setSong } = useMusicPlayer();
+
   if (!album) {
     return <div>No album found</div>;
   }
@@ -12,18 +17,32 @@ const AlbumPage = ({ album }: AlbumPageProps) => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-8">{album.title}</h1>
-      <img src={album.albumCoverUrl} alt={album.title} className="w-full h-64 object-cover mb-8" />
+      <img src={album.albumCoverUrl} alt={album.title} className="w-32 h-32 object-cover mx-auto mb-8" />
       <p className="text-xl mb-4">Artist: {album.artist.name}</p>
       <p className="text-xl mb-4">Genre: {album.genre}</p>
       <p className="text-xl mb-4">Release Date: {new Date(album.releaseDate).toLocaleDateString()}</p>
+      
       <h2 className="text-2xl font-bold mb-4">Songs</h2>
-      <ul>
-        {album.songs.map((song) => (
-          <li key={song._id} className="mb-2">
-            {song.title} - {song.year}
-          </li>
+      
+      <div className="bg-black text-white rounded-lg p-4">
+        <div className="flex justify-between border-b border-gray-700 pb-2 mb-2">
+          <span>#</span>
+          <span className="flex-1 text-left pl-8">Title</span>
+        </div>
+        {album.songs.map((song, index) => (
+          <div
+            key={song._id}
+            className="flex justify-between items-center py-2 hover:bg-gray-800 rounded cursor-pointer"
+            onClick={() => setSong(song.songFileUrl, song.title, album.artist.name)}
+          >
+            <span className="w-8">{index + 1}</span>
+            <div className="flex-1 text-left pl-8">
+              <p className="text-white">{song.title}</p>
+              <p className="text-gray-400 text-sm">{album.artist.name}</p>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
