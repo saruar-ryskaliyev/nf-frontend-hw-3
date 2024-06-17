@@ -33,7 +33,16 @@ type Artist = {
   description: string;
   photoUrl: string;
   songs: Song[];
+  albums: Album[];
   __v: number;
 };
 
-export type { Song, Album, Artist };
+type Playlist = {
+  _id: string;
+  name: string;
+  description: string;
+  songs: Song[];
+  __v: number;
+};
+
+export type { Song, Album, Artist, Playlist };
