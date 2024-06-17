@@ -1,35 +1,45 @@
 'use client';
 
+import axios from 'axios';
 import axiosInstance from './axiosInstance';
-import PostList from './components/PostList';
-import { Post } from './types';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './context/AuthContext';
 import { useEffect, useState } from 'react';
-import PostActions from './components/PostActions';
+import Tile from './components/Tile';
+import {Album, Artist} from './types/index';
 
-const fetchPosts = async (): Promise<Post[]> => {
-  const response = await axiosInstance.get('auth/posts');
-  return response.data.posts;
-};
 
 const HomePage = () => {
   const { isAuthenticated } = useAuth();
-  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [artists, setArtists] = useState<Artist[]>([]); // Use Artist[] type
+  const [albums, setAlbums] = useState<Album[]>([]);
+
   useEffect(() => {
     if (isAuthenticated) {
-      fetchPosts()
-        .then((data) => {
-          setPosts(data);
+      const fetchData = async () => {
+        try {
+          const [artistsRes, albumsRes] = await Promise.all([
+            axiosInstance.get<Artist[]>('/artists'), // Apply type to API response
+            axiosInstance.get<Album[]>('/albums'),
+          ]);
+
+
+          setArtists(artistsRes.data);
+          setAlbums(albumsRes.data);
+          console.log(artistsRes.data);
+          console.log(albumsRes.data);
+
+        } catch (error) {
+          setError('Failed to fetch data');
+        } finally {
           setLoading(false);
-        })
-        .catch((err) => {
-          setError('Failed to fetch posts');
-          setLoading(false);
-        });
+        }
+      };
+
+      fetchData();
     } else {
       setLoading(false);
     }
@@ -47,8 +57,33 @@ const HomePage = () => {
     <ProtectedRoute>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold mb-8">Hello, world!</h1>
-        <PostActions posts={posts} setPosts={setPosts} />
-        <PostList posts={posts} />
+        <h2 className="text-2xl font-bold mb-4">Artists</h2>
+        <div className="flex overflow-x-scroll mb-8">
+          {artists.map((artist: any) => (
+            <div className="flex-none w-64 mr-4">
+              <Tile
+                key={artist._id}
+                imageUrl={artist.photoUrl}
+                title={artist.name}
+              />
+            </div>
+          ))}
+        </div>
+
+        <h2 className="text-2xl font-bold mb-4">Albums</h2>
+        <div className="flex overflow-x-scroll mb-8">
+          {albums.map((album: any) => (
+            <div className="flex-none w-64 mr-4">
+              <Tile
+                key={album._id}
+                imageUrl={album.albumCoverUrl}
+                title={album.title}
+                linkUrl={`/albums/${album._id}`}
+              />
+            </div>
+          ))}
+        </div>
+
       </div>
     </ProtectedRoute>
   );

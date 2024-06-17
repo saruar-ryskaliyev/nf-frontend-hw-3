@@ -9,7 +9,10 @@ const Header = () => {
   return (
     <header className={`py-4 shadow ${theme === 'light' ? 'bg-white text-black' : 'bg-black text-white'}`}>
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <h1 className="text-3xl font-bold">medium alike</h1>
+        <div className="flex items-center">
+          <img src="/spotify_logo.png" alt="Spotify Logo" className="w-8 h-8" />
+          <h1 className="text-3xl font-bold ml-2">Spotify</h1>
+        </div>
         <div className="flex items-center space-x-4">
           <button
             onClick={toggleTheme}

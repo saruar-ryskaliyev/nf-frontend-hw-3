@@ -1,20 +1,24 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
+import RegisterPage from '../register/page';
 
 const LoginPage = () => {
   const { login } = useAuth();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     try {
-      await login(username, password);
+      await login(email, password);
     } catch (err) {
+      console.error(err);
       setError('Failed to login');
     }
   };
@@ -26,11 +30,11 @@ const LoginPage = () => {
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700">Username</label>
+            <label className="block text-gray-700">Email</label>
             <input
               type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded text-black"
               required
             />
@@ -48,6 +52,20 @@ const LoginPage = () => {
           <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
             Login
           </button>
+
+          <p className="mt-10 text-center">
+            Not registered?
+            <a
+              href="/register"
+              className="pl-1 text-blue-500 cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                router.push('/register');
+              }}
+            >
+              Click here to register
+            </a>
+          </p>
         </form>
       </div>
     </div>

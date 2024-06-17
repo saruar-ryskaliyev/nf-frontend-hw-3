@@ -8,6 +8,7 @@ import axiosInstance from '../axiosInstance';
 interface AuthContextProps {
   isAuthenticated: boolean;
   login: (us: string, pw: string) => Promise<void>;
+  register: (em: string, un: string, pw: string) => Promise<void>;
   logout: () => void;
   token: string | null;
 }
@@ -29,14 +30,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  const login = async (us: string, pw: string) => {
+  const login = async (em: string, pw: string) => {
     try {
       const response = await axios.post(
-        'https://dummyjson.com/auth/login',
+        'http://localhost:8000/api/auth/login',
         {
-          username: us,
-          password: pw,
-          expiresInMins: 30, // optional parameter
+          email: em,
+          password: pw
         },
         {
           headers: {
@@ -44,13 +44,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           },
         }
       );
-      const authToken = response.data.token;
+      const authToken = response.data.accessToken;
       setToken(authToken);
       setIsAuthenticated(true);
       if (typeof window !== 'undefined') {
         localStorage.setItem('token', authToken);
       }
       router.push('/');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Axios error response:', error.response);
+      } else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  };
+
+  const register = async (em: string, un: string, pw: string) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/api/auth/register',
+        {
+          email: em,
+          username: un,
+          password: pw
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      router.push('/login');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Axios error response:', error.response);
@@ -71,7 +97,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, token }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, register, logout, token }}>
       {children}
     </AuthContext.Provider>
   );
