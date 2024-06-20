@@ -1,4 +1,7 @@
+// components/MusicPlayer.tsx
 import React, { useState, useRef, useEffect } from 'react';
+import { useSocket } from '../context/SocketContext';
+import { useAuth } from '../context/AuthContext';
 
 export interface MusicPlayerProps {
   songUrl?: string;
@@ -7,17 +10,24 @@ export interface MusicPlayerProps {
 }
 
 const MusicPlayer: React.FC<MusicPlayerProps> = ({ songUrl, title, artist }) => {
+  const { socket } = useSocket();
+  const { token } = useAuth();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1); // Volume state
 
+  const currentUserId = token ? parseJwt(token).userId : null;
+
   useEffect(() => {
     if (audioRef.current && songUrl) {
       audioRef.current.src = songUrl;
       audioRef.current.play();
       setIsPlaying(true);
+      if (socket && currentUserId) {
+        socket.emit('listen', { userId: currentUserId, song: title });
+      }
     }
   }, [songUrl]);
 
@@ -117,3 +127,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songUrl, title, artist }) => 
 };
 
 export default MusicPlayer;
+
+// Helper function to parse JWT token
+function parseJwt(token: string) {
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch (e) {
+    return null;
+  }
+}

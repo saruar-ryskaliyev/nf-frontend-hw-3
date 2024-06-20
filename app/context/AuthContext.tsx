@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (em: string, pw: string) => {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/auth/login',
+        'https://spotify-backend-r80g.onrender.com/api/auth/login',
         {
           email: em,
           password: pw
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const register = async (em: string, un: string, pw: string) => {
     try {
       await axios.post(
-        'http://localhost:8000/api/auth/register',
+        'https://spotify-backend-r80g.onrender.com/api/auth/register',
         {
           email: em,
           username: un,

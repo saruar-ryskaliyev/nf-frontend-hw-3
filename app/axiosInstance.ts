@@ -2,7 +2,7 @@ import axios from 'axios';
 import nookies from 'nookies';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: 'https://spotify-backend-r80g.onrender.com/api',
   withCredentials: true, // Ensure cookies are sent with requests
 });
 

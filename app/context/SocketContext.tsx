@@ -1,6 +1,7 @@
+// context/SocketContext.tsx
 'use client';
 
-import React, { createContext, useContext, ReactNode, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, ReactNode, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
 interface SocketContextProps {
@@ -21,11 +22,13 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:8000'); // Replace with your backend URL
-    setSocket(newSocket);
+    const socketInstance = io('https://spotify-backend-r80g.onrender.com', {
+      withCredentials: true,
+    });
+    setSocket(socketInstance);
 
     return () => {
-      newSocket.close();
+      socketInstance.disconnect();
     };
   }, []);
 
