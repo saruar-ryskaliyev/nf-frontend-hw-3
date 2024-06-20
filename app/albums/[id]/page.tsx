@@ -2,7 +2,6 @@ import { cookies } from 'next/headers';
 import { Album } from '../../types'; // Import the Album type
 import axiosInstance from '../../axiosInstance';
 import AlbumPage from '../../components/AlbumPage';
-import nookies from 'nookies';
 
 interface PageProps {
   params: { id: string };

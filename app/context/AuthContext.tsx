@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const savedToken = nookies.get(null).accessToken;
+    const savedToken = nookies.get(null).token;
     if (savedToken) {
       setToken(savedToken);
       setIsAuthenticated(true);
