@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const Header: React.FC = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -24,17 +25,14 @@ const Header: React.FC = () => {
           className='flex items-center'
         >
 
-          <img src="/spotify_logo.png" alt="Spotify Logo" className="w-8 h-8" />
+          <Image src="/spotify_logo.png" alt="Spotify Logo" className="w-8 h-8" />
           <h1 className="text-3xl font-bold ml-2">Spotify</h1>
 
 
 
 
         </button>
-        {/* <div className="flex items-center">
-          <img src="/spotify_logo.png" alt="Spotify Logo" className="w-8 h-8" />
-          <h1 className="text-3xl font-bold ml-2">Spotify</h1>
-        </div> */}
+  
         <div className="flex items-center space-x-4">
           <form onSubmit={handleSearch} className="flex items-center space-x-2">
             <input

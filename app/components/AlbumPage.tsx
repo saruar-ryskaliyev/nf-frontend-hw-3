@@ -2,6 +2,7 @@
 
 import { Album } from '../types'; // Import the Album type
 import { useMusicPlayer } from '../context/MusicPlayerContext';
+import Image from 'next/image';
 
 export interface AlbumPageProps {
   album: Album;
@@ -17,7 +18,7 @@ const AlbumPage = ({ album }: AlbumPageProps) => {
   return (
     <div className="container mx-auto px-4 py-8 text-center">
       <h1 className="text-4xl font-bold mb-8">{album.title}</h1>
-      <img src={album.albumCoverUrl} alt={album.title} className="w-80 h-80 object-cover mx-auto mb-8" />
+      <Image src={album.albumCoverUrl} alt={album.title} className="w-80 h-80 object-cover mx-auto mb-8" />
       <p className="text-xl mb-4 font-bold">{album.artist.name}</p>
       <p className="text-xl mb-4">{album.genre}</p>
       <p className="text-xl mb-4">{new Date(album.releaseDate).toLocaleDateString()}</p>

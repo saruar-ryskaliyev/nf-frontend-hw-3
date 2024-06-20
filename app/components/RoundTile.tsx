@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface TileProps {
     imageUrl: string;
@@ -11,7 +12,7 @@ interface TileProps {
 const RoundTile: React.FC<TileProps> = ({ imageUrl, title, description, linkUrl }) => {
     const content = (
         <div className="w-48 rounded-lg overflow-hidden shadow-lg flex-shrink-0 cursor-pointer">
-            <img src={imageUrl} alt={title} className="w-48 h-48 object-cover rounded-full" />
+            <Image src={imageUrl} alt={title} className="w-48 h-48 object-cover rounded-full" />
             <div className="p-4">
                 <h2 className="text-center text-xl font-bold">{title}</h2>
                 {description && <p className="text-gray-600">{description}</p>}
