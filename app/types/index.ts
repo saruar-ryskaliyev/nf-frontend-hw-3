@@ -1,30 +1,6 @@
-type Song = {
+type ArtistSummary = {
   _id: string;
-  title: string;
-  artist: string;
-  album: string;
-  year: number;
-  genre: string;
-  songFileUrl: string;
-  __v: number;
-};
-
-type Album = {
-  _id: string;
-  title: string;
-  artist: {
-    _id: string;
-    name: string;
-    description: string;
-    photoUrl: string;
-    songs: string[];
-    __v: number;
-  };
-  releaseDate: string;
-  genre: string;
-  albumCoverUrl: string;
-  songs: Song[];
-  __v: number;
+  name: string;
 };
 
 type Artist = {
@@ -37,12 +13,35 @@ type Artist = {
   __v: number;
 };
 
+type Song = {
+  _id: string;
+  title: string;
+  artist: ArtistSummary; 
+  album: string;
+  year: number;
+  genre: string;
+  songFileUrl: string;
+  __v: number;
+};
+
+type Album = {
+  _id: string;
+  title: string;
+  artist: ArtistSummary; 
+  releaseDate: string;
+  genre: string;
+  albumCoverUrl: string;
+  songs: Song[];
+  __v: number; 
+};
+
 type Playlist = {
   _id: string;
   name: string;
   description: string;
+  user: string;
   songs: Song[];
-  __v: number;
-};
+  __v: number; 
+}
 
-export type { Song, Album, Artist, Playlist };
+export type { Song, Album, Artist, ArtistSummary, Playlist };

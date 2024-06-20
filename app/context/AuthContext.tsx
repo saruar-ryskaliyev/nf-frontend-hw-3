@@ -3,11 +3,11 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import axiosInstance from '../axiosInstance';  
+import nookies from 'nookies';
 
 interface AuthContextProps {
   isAuthenticated: boolean;
-  login: (us: string, pw: string) => Promise<void>;
+  login: (em: string, pw: string) => Promise<void>;
   register: (em: string, un: string, pw: string) => Promise<void>;
   logout: () => void;
   token: string | null;
@@ -21,12 +21,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedToken = localStorage.getItem('token');
-      if (savedToken) {
-        setToken(savedToken);
-        setIsAuthenticated(true);
-      }
+    const savedToken = nookies.get(null).accessToken;
+    if (savedToken) {
+      setToken(savedToken);
+      setIsAuthenticated(true);
     }
   }, []);
 
@@ -47,9 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const authToken = response.data.accessToken;
       setToken(authToken);
       setIsAuthenticated(true);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('token', authToken);
-      }
+      nookies.set(null, 'accessToken', authToken, { maxAge: 7 * 24 * 60 * 60, path: '/' });
       router.push('/');
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -63,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const register = async (em: string, un: string, pw: string) => {
     try {
-      const response = await axios.post(
+      await axios.post(
         'http://localhost:8000/api/auth/register',
         {
           email: em,
@@ -90,9 +86,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setToken(null);
     setIsAuthenticated(false);
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('token');
-    }
+    nookies.destroy(null, 'accessToken');
     router.push('/login');
   };
 

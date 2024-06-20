@@ -28,10 +28,10 @@ const HomePage = () => {
             axiosInstance.get<Playlist[]>('/playlists')
           ]);
 
-
           setArtists(artistsRes.data);
           setAlbums(albumsRes.data);
           setPlaylists(playlistsRes.data);
+
 
         } catch (error) {
           setError('Failed to fetch data');
@@ -66,6 +66,7 @@ const HomePage = () => {
                 imageUrl='https://via.placeholder.com/300'
                 key={playlist._id}
                 title={playlist.name}
+                linkUrl={`/playlists/${playlist._id}`}
               />
             </div>
           ))}

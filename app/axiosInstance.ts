@@ -1,21 +1,23 @@
 import axios from 'axios';
+import nookies from 'nookies';
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:8000/api',
+  withCredentials: true, // Ensure cookies are sent with requests
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
+    if (typeof window === 'undefined') {
+      const token = nookies.get({ req: (config as any).req }).accessToken;
       if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
-        config.headers['Content-Type'] = 'application/json';
-      } else {
-        console.warn('Token not found in localStorage');
       }
     } else {
-      console.warn('window is undefined');
+      const token = nookies.get(null).accessToken;
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
     }
     return config;
   },
@@ -30,11 +32,11 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     if (error.response) {
-      console.error('Response error:', error.response);
+      // console.error('Response error:', error.response);
     } else if (error.request) {
-      console.error('Request error:', error.request);
+      // console.error('Request error:', error.request);
     } else {
-      console.error('Error message:', error.message);
+      // console.error('Error message:', error.message);
     }
     return Promise.reject(error);
   }

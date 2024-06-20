@@ -1,35 +1,39 @@
-import { GetServerSideProps } from 'next';
+import { cookies } from 'next/headers';
 import { Artist } from '../../types'; // Import the Artist type
 import axiosInstance from '../../axiosInstance';
-import ArtistPage, { ArtistPageProps } from '../../components/ArtistPage';
-
+import ArtistPage from '../../components/ArtistPage';
+import nookies from 'nookies';
 
 interface PageProps {
-    params: { id: string };
+  params: { id: string };
 }
 
-const fetchArtist = async (id: string): Promise<Artist | null> => {
-    try {
-        console.log('fetchArtist');
-        const response = await axiosInstance.get<Artist>(`/artists/${id}`);
-        console.log('fetchArtist response', response);
-        return response.data;
-    } catch (error) {
-        return null;
-    }
+const fetchArtist = async (id: string, token: string): Promise<Artist | null> => {
+  try {
+    const response = await axiosInstance.get<Artist>(`/artists/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    // console.error('Error fetching artist:', error);
+    return null;
+  }
 };
 
-
 const ArtistSlugPage = async ({ params }: PageProps) => {
-    const artist = await fetchArtist(params.id);
+  const cookiesList = cookies();
+  const token = cookiesList.get('accessToken')?.value || '';
 
-  
-    if (!artist) {
-      return <div>No artist found</div>;
-    }
-  
-    return <ArtistPage artist={artist} />;
-  };
 
+  const artist = await fetchArtist(params.id, token);
+
+  if (!artist) {
+    return <div>No artist found</div>;
+  }
+
+  return <ArtistPage artist={artist} />;
+};
 
 export default ArtistSlugPage;
